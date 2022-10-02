@@ -2,4 +2,7 @@
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
     },
+    "conventionalCommits.scopes": [
+        "docker"
+    ],
 }

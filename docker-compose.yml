@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+  web:
+    image: judeibe/budget:latest
+    restart: unless-stopped
+    expose:
+      - "80"
