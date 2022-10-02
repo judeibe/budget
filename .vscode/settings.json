@@ -3,6 +3,7 @@
         "source.organizeImports": true
     },
     "conventionalCommits.scopes": [
-        "docker"
+        "docker",
+        "lint"
     ],
 }
