@@ -1,0 +1,21 @@
+version: '3.3'
+services:
+  budget-mobile:
+    container_name: budget-mobile
+    image: ghcr.io/judeibe/budget:${TAG}
+    restart: unless-stopped
+    expose:
+      - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.budget-mobile.entrypoints=https"
+      - "traefik.http.routers.budget-mobile.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.budget-mobile.tls=true"
+      - "traefik.http.routers.budget-mobile.tls.certresolver=main"
+      - "traefik.http.routers.budget-mobile.service=budget-mobile"
+      - "traefik.http.services.budget-mobile.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
