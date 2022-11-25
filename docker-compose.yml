@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    expose:
+      - "3000"
+    networks:
+      - proxy
+    image: t3-app
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.budget-mobile.entrypoints=https"
+      - "traefik.http.routers.budget-mobile.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.budget-mobile.tls=true"
+      - "traefik.http.routers.budget-mobile.tls.certresolver=main"
+      - "traefik.http.routers.budget-mobile.service=budget-mobile"
+      - "traefik.http.services.budget-mobile.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
