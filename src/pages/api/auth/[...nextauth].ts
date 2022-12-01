@@ -1,26 +1,32 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 
 import { env } from "../../../env/server.mjs";
+import Firefly from "./providers/firefly";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        if (token.sub) {
+          session.user.id = token.sub;
+          session.user.email = token.email;
+        }
       }
       return session;
     },
   },
   // Configure one or more authentication providers
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    Firefly({
+      clientId: env.FIREFLY_CLIENT_ID,
+      clientSecret: env.FIREFLY_CLIENT_SECRET,
+      serverUrl: env.FIREFLY_SERVER_URL,
     }),
-    // ...add more providers here
   ],
 };
+
+
 
 export default NextAuth(authOptions);
