@@ -1,6 +1,6 @@
-import { type inferAsyncReturnType } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
+import type { inferAsyncReturnType } from "@trpc/server";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { Session } from "next-auth";
 
 import { getServerAuthSession } from "../common/get-server-auth-session";
 
@@ -15,7 +15,7 @@ type CreateContextOptions = {
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
+    session: opts.session
   };
 };
 
@@ -30,7 +30,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   const session = await getServerAuthSession({ req, res });
 
   return await createContextInner({
-    session,
+    session
   });
 };
 
